@@ -33,8 +33,10 @@ const fetchHistory = async (p = page) => {
     );
 
     if (!res.ok) {
-      throw new Error("API failed");
-    }
+  const text = await res.text();
+  console.error("History API error:", text);
+  throw new Error("History API failed");
+}
 
     const text = await res.text();
 
@@ -234,13 +236,15 @@ const handleDelete = async (id) => {
       }
     );
 
- const text = await res.text();
+const text = await res.text();
 
-if (text.startsWith("<!doctype")) {
-  throw new Error("Delete failed");
+try {
+  const data = JSON.parse(text);
+  setItems(data.data);
+} catch (e) {
+  console.error("Not JSON:", text);
 }
 
-const data = JSON.parse(text);
 
 
     if (!res.ok) {
@@ -456,7 +460,7 @@ const data = JSON.parse(text);
 
 
       {/* Pagination */}
- <div   lassName="flex justify-between items-center pt-6">
+ <div   className="flex justify-between items-center pt-6">
   <button
     disabled={page === 1}
     onClick={() => setPage(page - 1)}
