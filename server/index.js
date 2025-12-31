@@ -14,17 +14,17 @@ const PORT = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://nutrivision-ai-food-nutrition-analyze.netlify.app"
-    ],
+    origin: "*",
     methods: ["GET", "POST", "DELETE"],
   })
 );
 
 
+
 app.use("/api", detectFoodRoutes);
 app.use("/api/history", historyRoutes);
+
+
 
 
 

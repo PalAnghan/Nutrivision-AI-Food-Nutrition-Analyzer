@@ -28,8 +28,9 @@ const fetchHistory = async (p = page) => {
   setLoading(true); // 
 
   const res = await fetch(
-    `http://localhost:5000/api/history?page=${p}&limit=5`
-  );
+  `${import.meta.env.VITE_API_URL}/api/history?page=${p}&limit=5`
+);
+
   const data = await res.json();
 
   setItems(data.data);
@@ -212,7 +213,7 @@ const handleDelete = async (id) => {
 
   try {
     const res = await fetch(
-      `http://localhost:5000/api/history/${id}`,
+      `${import.meta.env.VITE_API_URL}/api/history/${id}`,
       {
         method: "DELETE",
       }

@@ -19,7 +19,7 @@ function FoodUpload({ setResult }) {
       formData.append("mealType", mealType);
 
 
-      const res = await fetch("http://localhost:5000/api/detect-food", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/detect-food`,  {
         method: "POST",
         body: formData,
       });
