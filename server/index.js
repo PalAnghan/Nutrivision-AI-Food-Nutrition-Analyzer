@@ -9,7 +9,7 @@ import connectDB from "./config/db.js";
 connectDB();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+
 
 
 app.use(
@@ -21,12 +21,13 @@ app.use(
 
 
 
+
 app.use("/api", detectFoodRoutes);
 app.use("/api/history", historyRoutes);
 
 
 
-
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
