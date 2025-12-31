@@ -247,7 +247,7 @@ const handleDelete = async (id) => {
     🍽 Food History
   </h1>
   <p className="text-gray-600 mt-1">
-    Track what you’ve eaten and monitor calories
+    Track what you’ve eaten and monitor calories  
   </p>
 </div>
 
