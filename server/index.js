@@ -14,16 +14,21 @@ const PORT = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://your-netlify-site.netlify.app"
+    ],
     methods: ["GET", "POST", "DELETE"],
   })
 );
+
 
 app.use("/api", detectFoodRoutes);
 app.use("/api/history", historyRoutes);
 
 
 
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
+
