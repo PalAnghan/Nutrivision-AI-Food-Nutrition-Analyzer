@@ -14,10 +14,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://your-netlify-site.netlify.app"
-    ],
+    origin: "*",
     methods: ["GET", "POST", "DELETE"],
   })
 );
