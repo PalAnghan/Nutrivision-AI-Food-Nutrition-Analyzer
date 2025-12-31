@@ -25,20 +25,35 @@ function History() {
 
 
 const fetchHistory = async (p = page) => {
-  setLoading(true); // 
+  setLoading(true);
 
-  const res = await fetch(
-  `${import.meta.env.VITE_API_URL}/api/history?page=${p}&limit=5`
-);
+  try {
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/history?page=${p}&limit=5`
+    );
 
-  const data = await res.json();
+    if (!res.ok) {
+      throw new Error("API failed");
+    }
 
-  setItems(data.data);
-  setPage(data.page);
-  setTotalPages(data.totalPages);
+    const text = await res.text();
 
-  setLoading(false); // 
+    if (text.startsWith("<!doctype")) {
+      throw new Error("HTML received instead of JSON");
+    }
+
+    const data = JSON.parse(text);
+
+    setItems(data.data);
+    setPage(data.page);
+    setTotalPages(data.totalPages);
+  } catch (err) {
+    console.error("History error:", err.message);
+  } finally {
+    setLoading(false);
+  }
 };
+
 
 
   useEffect(() => {
@@ -219,7 +234,14 @@ const handleDelete = async (id) => {
       }
     );
 
-    const data = await res.json();
+ const text = await res.text();
+
+if (text.startsWith("<!doctype")) {
+  throw new Error("Delete failed");
+}
+
+const data = JSON.parse(text);
+
 
     if (!res.ok) {
       console.error(data);
