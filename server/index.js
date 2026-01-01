@@ -19,7 +19,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://nutrivision-ai-food-nutrition-analyzer.onrender.com/",
     "https://nutrivision-ai-food-nutrition-analyze.netlify.app"
   ],
   methods: ["GET", "POST", "DELETE"],
