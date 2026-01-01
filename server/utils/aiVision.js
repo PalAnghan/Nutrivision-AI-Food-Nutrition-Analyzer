@@ -1,4 +1,5 @@
 import fs from "fs";
+import fetch from "node-fetch";
 
 export async function detectFoodFromImage(imagePath) {
   try {
@@ -11,7 +12,7 @@ export async function detectFoodFromImage(imagePath) {
       {
         method: "POST",
         headers: {
-          Authorization: process.env.CLARIFAI_PAT, // MUST start with Bearer
+          Authorization: `Bearer ${process.env.CLARIFAI_PAT}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -35,13 +36,13 @@ export async function detectFoodFromImage(imagePath) {
     const result = await response.json();
 
     if (!response.ok) {
-      console.error("Clarifai API error:", result);
-      throw new Error("Clarifai failed");
+      console.error("Clarifai error:", result);
+      throw new Error("CLARIFAI_FAILED");
     }
 
     return result.outputs[0].data.concepts;
-  } catch (error) {
-  console.error("Clarifai full error:", error);
-  throw new Error("CLARIFAI_FAILED");
-}
+  } catch (err) {
+    console.error("detectFoodFromImage error:", err.message);
+    throw err;
+  }
 }
