@@ -5,8 +5,8 @@ import {
   BarElement,
   LineElement,
   PointElement,
-  BarController,
   LineController,
+  BarController,
   Tooltip,
   Legend,
 } from "chart.js";
@@ -19,11 +19,12 @@ ChartJS.register(
   BarElement,
   LineElement,
   PointElement,
-  BarController,
   LineController,
+  BarController,
   Tooltip,
   Legend
 );
+
 
 
 
