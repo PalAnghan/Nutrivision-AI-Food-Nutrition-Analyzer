@@ -7,8 +7,12 @@ import History from "../models/FoodHistory.js";
 
 
 const router = express.Router();
-const upload = multer({ dest: "uploads/" });
-  
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 } // 5MB
+});
+
+
 
 router.post("/detect-food", upload.single("image"), async (req, res) => {
   try {
@@ -18,7 +22,9 @@ router.post("/detect-food", upload.single("image"), async (req, res) => {
     }
 
     // 1️⃣ Detect concepts from AI
-    const concepts = await detectFoodFromImage(req.file.path);
+    const imageBase64 = req.file.buffer.toString("base64");
+    const concepts = await detectFoodFromImage(imageBase64);
+
 
     // 2️⃣ Keep confident concepts
     const foodConcepts = concepts.filter(c => c.value > 0.9);
