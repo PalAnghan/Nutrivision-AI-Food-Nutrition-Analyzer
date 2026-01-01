@@ -23,7 +23,8 @@ router.post("/detect-food", upload.single("image"), async (req, res) => {
 
     // 1️⃣ Detect concepts from AI
     const imageBase64 = req.file.buffer.toString("base64");
-    const concepts = await detectFoodFromImage(imageBase64);
+   const concepts = await detectFoodFromImage(req.file.buffer);
+
 
 
     // 2️⃣ Keep confident concepts
