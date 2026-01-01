@@ -38,24 +38,25 @@ function CaloriesChart({ history = [], dailyGoal = 2000 }) {
   const caloriesData = Object.values(caloriesByDate);
 
   const data = {
-    labels,
-    datasets: [
-      {
-        type: "bar",
-        label: "Calories per day",
-        data: caloriesData,
-        backgroundColor: "#4ade80",
-      },
-      {
-        type: "line",
-        label: "Daily Goal",
-        data: labels.map(() => dailyGoal),
-        borderColor: "red",
-        borderWidth: 2,
-        pointRadius: 0,
-      },
-    ],
-  };
+  labels,
+  datasets: [
+    {
+      type: "bar",
+      label: "Calories per day",
+      data: caloriesData,
+      backgroundColor: "#4ade80",
+    },
+    {
+      type: "line",
+      label: "Daily Goal",
+      data: labels.map(() => dailyGoal),
+      borderColor: "red",
+      borderWidth: 2,
+      pointRadius: 0,
+    },
+  ],
+};
+
   const options = {
   responsive: true,
   plugins: {
