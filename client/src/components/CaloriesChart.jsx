@@ -3,27 +3,39 @@ import {
   CategoryScale,
   LinearScale,
   BarElement,
+  LineElement,
+  PointElement,
+  BarController,
+  LineController,
   Tooltip,
   Legend,
 } from "chart.js";
 
 import { Bar } from "react-chartjs-2";
-  
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
+  LineElement,
+  PointElement,
+  BarController,
+  LineController,
   Tooltip,
   Legend
 );
 
 
-function CaloriesChart({ history = [], dailyGoal = 2000 }) {
-  if (!Array.isArray(history) || history.length === 0) {
-    return <p className="text-gray-500 text-sm">No chart data available</p>;
-  }
 
+function CaloriesChart({ history = [], dailyGoal = 2000 }) {
+  if (!history || !Array.isArray(history) || history.length === 0) {
+
+return (
+    <div className="text-gray-500 text-sm text-center">
+      No history data available
+    </div>
+    );
+  }
   const caloriesByDate = {};
 
   history.forEach((item) => {
