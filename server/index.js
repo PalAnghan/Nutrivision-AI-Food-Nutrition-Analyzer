@@ -15,9 +15,11 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 app.use(cors({
-  origin: "*",
+  origin: [
+    "http://localhost:5173",
+    "https://nutrivision-ai-food-nutrition-analyze.netlify.app"
+  ],
   methods: ["GET", "POST", "DELETE"],
 }));
 
