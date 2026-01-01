@@ -7,6 +7,8 @@ import detectFoodRoutes from "./routes/detectFoodRoutes.js";
 import historyRoutes from "./routes/historyRoutes.js";
 import connectDB from "./config/db.js";
 connectDB();
+import healthRoutes from "./routes/healthRoutes.js";
+
 
 const app = express();
 
@@ -25,6 +27,9 @@ app.use(cors({
 app.use("/api", detectFoodRoutes);
 
 app.use("/api/history", historyRoutes);
+
+app.use("/api/health", healthRoutes);
+
 
 
 
