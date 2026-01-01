@@ -8,6 +8,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+
 import { Bar } from "react-chartjs-2";
 
 ChartJS.register(
@@ -21,12 +22,16 @@ ChartJS.register(
 );
 
 function CaloriesChart({ history = [], dailyGoal = 2000 }) {
+  if (!Array.isArray(history) || history.length === 0) {
+    return <p className="text-gray-500 text-sm">No chart data available</p>;
+  }
+
   const caloriesByDate = {};
 
   history.forEach((item) => {
     const date = new Date(item.createdAt).toLocaleDateString();
     caloriesByDate[date] =
-      (caloriesByDate[date] || 0) + item.calories;
+      (caloriesByDate[date] || 0) + (item.calories || 0);
   });
 
   const labels = Object.keys(caloriesByDate);
@@ -47,15 +52,12 @@ function CaloriesChart({ history = [], dailyGoal = 2000 }) {
         data: labels.map(() => dailyGoal),
         borderColor: "red",
         borderWidth: 2,
-        borderDash: [6, 6],
         pointRadius: 0,
       },
     ],
   };
-
-const options = {
+  const options = {
   responsive: true,
-  maintainAspectRatio: false, // ⭐ THIS FIXES SIZE
   plugins: {
     legend: {
       position: "top",
@@ -64,39 +66,11 @@ const options = {
   scales: {
     y: {
       beginAtZero: true,
-      suggestedMax: dailyGoal + 200,
     },
   },
 };
 
-
-return (
-  <div className="relative h-[260px] sm:h-[320px]">
-    <Bar
-      data={data}
-      options={{
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: "top",
-            labels: { boxRadius: 6 }
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: { color: "#eee" }
-          },
-          x: {
-            grid: { display: false }
-          }
-        }
-      }}
-    />
-  </div>
-);
-
+  return <Bar data={data} options={options} />;
 
 }
 

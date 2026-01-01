@@ -8,37 +8,39 @@ function FoodUpload({ setResult }) {
 
 
   const handleSubmit = async () => {
-    if (!file) return;
+  if (!file) return;
 
-    setLoading(true);
-    setError("");
+  setLoading(true);
+  setError("");
 
-    try {
-      const formData = new FormData();
-      formData.append("image", file);
-      formData.append("mealType", mealType);
+  try {
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("mealType", mealType);
 
-
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/detect-food`,  {
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/detect-food`,
+      {
         method: "POST",
         body: formData,
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "Server error");
       }
+    );
 
-      // ✅ VERY IMPORTANT
-      setResult(data);
-
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(text || "Server error");
     }
-  };
+
+    const data = await res.json(); // ✅ NOW data exists
+    setResult(data);
+
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div>

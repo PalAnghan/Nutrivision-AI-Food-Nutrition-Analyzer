@@ -10,19 +10,20 @@ connectDB();
 
 const app = express();
 
-app.use(
-  cors({
-    origin: true,
-    credentials: true,
-    methods: ["GET", "POST", "DELETE"],
-  })
-);
 
-
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://nutrivision-ai-food-nutrition-analyzer.onrender.com/"
+  ],
+  methods: ["GET", "POST", "DELETE"],
+  credentials: true
+}));
 
 
 
 app.use("/api", detectFoodRoutes);
+
 app.use("/api/history", historyRoutes);
 
 

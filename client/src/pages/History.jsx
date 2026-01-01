@@ -26,27 +26,20 @@ function History() {
 
 const fetchHistory = async (p = page) => {
   setLoading(true);
-
   try {
     const res = await fetch(
       `${import.meta.env.VITE_API_URL}/api/history?page=${p}&limit=5`
     );
 
     if (!res.ok) {
-  const text = await res.text();
-  console.error("History API error:", text);
-  throw new Error("History API failed");
-}
-
-    const text = await res.text();
-
-    if (text.startsWith("<!doctype")) {
-      throw new Error("HTML received instead of JSON");
+      
+      throw new Error(errText);
     }
 
-    const data = JSON.parse(text);
+    const data = await res.json(); // ✅ correct
+    
 
-    setItems(data.data);
+    setItems(data.data || []);
     setPage(data.page);
     setTotalPages(data.totalPages);
   } catch (err) {
@@ -55,6 +48,8 @@ const fetchHistory = async (p = page) => {
     setLoading(false);
   }
 };
+
+
 
 
 
