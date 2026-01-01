@@ -41,7 +41,7 @@ export async function detectFoodFromImage(imagePath) {
 
     return result.outputs[0].data.concepts;
   } catch (error) {
-    console.error("detectFoodFromImage error:", error.message);
-    throw error;
-  }
+  console.error("Clarifai full error:", error);
+  throw new Error("CLARIFAI_FAILED");
+}
 }

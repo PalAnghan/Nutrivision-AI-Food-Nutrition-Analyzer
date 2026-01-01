@@ -4,6 +4,7 @@ import { detectFoodFromImage } from "../utils/aiVision.js";
 import { getMainFood } from "../utils/foodCalories.js";
 import nutritionData from "../data/nutritionData.js";
 import History from "../models/FoodHistory.js";
+import fs from "fs";
 
 
 
@@ -38,6 +39,10 @@ router.post("/detect-food", upload.single("image"), async (req, res) => {
         mainFood = { name: "banana", value: fruitDetected.value };
       }
     }
+
+    if (!fs.existsSync("uploads")) {
+  fs.mkdirSync("uploads");
+}
 
     // 5️⃣ Nutrition lookup
     const nutrition =
