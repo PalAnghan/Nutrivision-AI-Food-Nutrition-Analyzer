@@ -3,8 +3,6 @@ import {
   CategoryScale,
   LinearScale,
   BarElement,
-  LineElement,
-  PointElement,
   Tooltip,
   Legend,
 } from "chart.js";
@@ -15,11 +13,10 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
-  LineElement,
-  PointElement,
   Tooltip,
   Legend
 );
+
 
 function CaloriesChart({ history = [], dailyGoal = 2000 }) {
   if (!Array.isArray(history) || history.length === 0) {
