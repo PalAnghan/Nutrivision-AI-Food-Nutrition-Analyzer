@@ -4,104 +4,81 @@ import { detectFoodFromImage } from "../utils/aiVision.js";
 import History from "../models/FoodHistory.js";
 import { nutritionData } from "../data/nutritionData.js";
 
-
-
 const router = express.Router();
+
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024 } // 5MB
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
 });
-
-
 
 router.post("/detect-food", upload.single("image"), async (req, res) => {
   try {
-        const { mealType } = req.body;
+    const { mealType } = req.body;
+
     if (!req.file) {
       return res.status(400).json({ error: "No image uploaded" });
     }
 
-    
-   const imageBase64 = req.file.buffer.toString("base64");
-   const concepts = await detectFoodFromImage(req.file.buffer);
+    // 🔹 Call AI
+    const concepts = await detectFoodFromImage(req.file.buffer);
 
-    
+    // 1️⃣ Filter confident concepts
     const foodConcepts = concepts.filter(c => c.value > 0.9);
 
-    
-  // let mainFood =
-  // foodConcepts.find(c =>
-  //   ["banana", "apple", "mango", "orange", "rice", "pizza"].includes(c.name)
-  // ) || null;
+    // 2️⃣ Supported foods
+    const supportedFoods = Object.keys(nutritionData);
 
-  const supportedFoods = Object.keys(nutritionData);
+    // 3️⃣ Alias mapping
+    const foodAliases = {
+      "green apple": "apple",
+      "apple slice": "apple",
+      "fried rice": "fried_rice",
+      "veg biryani": "biryani",
+    };
 
-let mainFood =
-  foodConcepts.find(c =>
-    supportedFoods.includes(c.name)
-  ) || null;
-const foodAliases = {
-  "green apple": "apple",
-  "apple slice": "apple",
-  "fried rice": "fried_rice",
-  "veg biryani": "biryani",
-};
+    // 4️⃣ Find supported detected food
+    const mainFood = foodConcepts.find(c => {
+      const normalized = foodAliases[c.name] || c.name;
+      return supportedFoods.includes(normalized);
+    }) || null;
 
+    // 5️⃣ Normalize name
+    const normalizedFood = mainFood
+      ? (foodAliases[mainFood.name] || mainFood.name)
+      : null;
 
-const normalizedName = foodAliases[c.name] || c.name;
+    // 6️⃣ Nutrition lookup
+    const nutrition = normalizedFood
+      ? nutritionData[normalizedFood]
+      : null;
 
-    
-    // if (!mainFood) {
-    //   const fruitDetected = foodConcepts.find(c => c.name === "fruit");
-    //   if (fruitDetected) {
-    //     mainFood = { name: "banana", value: fruitDetected.value };
-    //   }
-    // }
-    // 🥗 Nutrition lookup
-    const normalizedFood = mainFood?.name
-      ?.toLowerCase()
-      ?.replace(/\s+/g, "_");
-
-    const nutrition = nutritionData[normalizedFood] || null;
-
-
-    if (nutrition) {
-     await History.create({
-    food: mainFood.name,
-    calories: nutrition.calories,
-    protein: nutrition.protein,
-    carbs: nutrition.carbs,
-    fat: nutrition.fat,
-    confidence: mainFood.value * 100,
-    mealType: mealType || "lunch",
+    // 7️⃣ Save history if supported
+    if (nutrition && mainFood) {
+      await History.create({
+        food: normalizedFood,
+        calories: nutrition.calories,
+        protein: nutrition.protein,
+        carbs: nutrition.carbs,
+        fat: nutrition.fat,
+        confidence: mainFood.value * 100,
+        mealType: mealType || "lunch",
       });
     }
 
-
-    // 6️⃣ Response
- res.json({
-  success: true,
-  food: mainFood?.name || "Unknown",
-  confidence: mainFood ? (mainFood.value * 100).toFixed(1) : 0,
-  nutrition,
-  concepts,
-  isSupported: !!nutrition
-});
-
-if (!nutrition && mainFood) {
-  console.log("Requested food:", mainFood.name);
-  // later: save to DB or file
-}
-if (mainFood && mainFood.value < 0.6) {
-  mainFood = null;
-}
-
+    // 8️⃣ Final response
+    res.json({
+      success: true,
+      food: normalizedFood || "Unknown",
+      confidence: mainFood ? (mainFood.value * 100).toFixed(1) : 0,
+      nutrition,
+      concepts,
+      isSupported: !!nutrition,
+    });
 
   } catch (error) {
-    console.error(error);
+    console.error("Detect food error:", error);
     res.status(500).json({ error: "Food detection failed" });
   }
 });
-
 
 export default router;
