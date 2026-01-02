@@ -35,12 +35,12 @@ router.post("/detect-food", upload.single("image"), async (req, res) => {
       );
 
     
-    if (!mainFood) {
-      const fruitDetected = foodConcepts.find(c => c.name === "fruit");
-      if (fruitDetected) {
-        mainFood = { name: "banana", value: fruitDetected.value };
-      }
-    }
+    // if (!mainFood) {
+    //   const fruitDetected = foodConcepts.find(c => c.name === "fruit");
+    //   if (fruitDetected) {
+    //     mainFood = { name: "banana", value: fruitDetected.value };
+    //   }
+    // }
     // 🥗 Nutrition lookup
     const normalizedFood = mainFood?.name
       ?.toLowerCase()
