@@ -21,10 +21,12 @@ function ResultCard({ result }) {
         </ul>
       ) : (
         <>
-          {/* ❌ IF NOT SUPPORTED */}
-          <p className="text-orange-600 mt-3 font-medium">
-            ⚠️ This food is not supported yet. We’ll add it in future updates.
-          </p>
+          {!isSupported && (
+  <p className="warning">
+    ⚠️ This food is not supported yet. We’ll add it in future updates.
+  </p>
+)}
+
 
           <button
             className="mt-2 text-blue-600 underline text-sm"
