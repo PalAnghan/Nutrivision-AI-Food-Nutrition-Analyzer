@@ -63,14 +63,15 @@ router.post("/detect-food", upload.single("image"), async (req, res) => {
 
 
     // 6️⃣ Response
-    res.json({
-      success: true,
-      food: mainFood?.name || "Unknown",
-      confidence: mainFood ? (mainFood.value * 100).toFixed(1) : 0,
-      nutrition,
-      concepts,
-      isSupported: !!nutrition
-    });
+ res.json({
+  success: true,
+  food: mainFood?.name || "Unknown",
+  confidence: mainFood ? (mainFood.value * 100).toFixed(1) : 0,
+  nutrition,
+  concepts,
+  isSupported: !!nutrition
+});
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Food detection failed" });
