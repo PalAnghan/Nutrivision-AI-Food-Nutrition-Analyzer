@@ -11,38 +11,31 @@ function ResultCard({ result }) {
         {result.food} — {result.confidence}%
       </p>
 
-      {/* ✅ IF SUPPORTED → SHOW NUTRITION */}
-{result.isSupported && result.nutrition && (
-  <ul className="mt-3 text-sm text-gray-700 space-y-1">
-    <li>🔥 Calories: {result.nutrition.calories} kcal</li>
-    <li>🍞 Carbs: {result.nutrition.carbs} g</li>
-    <li>🥩 Protein: {result.nutrition.protein} g</li>
-    <li>🧈 Fat: {result.nutrition.fat} g</li>
-  </ul>
-)}
+      {/* ✅ SHOW NUTRITION IF SUPPORTED */}
+      {result.isSupported && result.nutrition && (
+        <ul className="mt-3 text-sm text-gray-700 space-y-1">
+          <li>🔥 Calories: {result.nutrition.calories} kcal</li>
+          <li>🍞 Carbs: {result.nutrition.carbs} g</li>
+          <li>🥩 Protein: {result.nutrition.protein} g</li>
+          <li>🧈 Fat: {result.nutrition.fat} g</li>
+        </ul>
+      )}
 
-{/* ❌ IF NOT SUPPORTED → SHOW WARNING */}
-{!result.isSupported && (
-  <p className="mt-3 text-sm text-orange-600">
-    ⚠️ This food is not supported yet. We’ll add it in future updates.
-  </p>
-)}
+      {/* ❌ SHOW WARNING IF NOT SUPPORTED */}
+      {!result.isSupported && (
+        <p className="mt-3 text-sm text-orange-600">
+          ⚠️ This food is not supported yet. We’ll add it in future updates.
+        </p>
+      )}
 
-
-
-          <button
-            className="mt-2 text-blue-600 underline text-sm"
-            onClick={() =>
-              alert("Thanks! We’ll add this food soon ❤️")
-            }
-          >
-            Request this food
-          </button>
-        
-      )
+      <button
+        className="mt-2 text-blue-600 underline text-sm"
+        onClick={() => alert("Thanks! We’ll add this food soon ❤️")}
+      >
+        Request this food
+      </button>
     </div>
-  )
+  );
 }
-
 
 export default ResultCard;
