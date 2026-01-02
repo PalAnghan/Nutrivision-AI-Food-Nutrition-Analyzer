@@ -4,6 +4,7 @@ import { detectFoodFromImage } from "../utils/aiVision.js";
 import History from "../models/FoodHistory.js";
 import { nutritionData } from "../data/nutritionData.js";
 
+
 const router = express.Router();
 
 const upload = multer({
