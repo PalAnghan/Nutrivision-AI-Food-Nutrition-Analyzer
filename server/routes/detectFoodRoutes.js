@@ -72,8 +72,7 @@ router.post("/detect-food", upload.single("image"), async (req, res) => {
       food: normalizedFood || "Unknown",
       confidence: mainFood ? (mainFood.value * 100).toFixed(1) : 0,
       nutrition,
-      concepts,
-      isSupported: !!nutrition,
+      isSupported: nutrition !== null,
     });
 
   } catch (error) {
