@@ -21,34 +21,34 @@ router.post("/detect-food", upload.single("image"), async (req, res) => {
       return res.status(400).json({ error: "No image uploaded" });
     }
 
-    // 1️⃣ Detect concepts from AI
+    
     const imageBase64 = req.file.buffer.toString("base64");
    const concepts = await detectFoodFromImage(req.file.buffer);
 
-
-
-    // 2️⃣ Keep confident concepts
+    
     const foodConcepts = concepts.filter(c => c.value > 0.9);
 
-    // 3️⃣ Priority food mapping
+    
     let mainFood =
       foodConcepts.find(c =>
         ["banana", "apple", "rice", "pizza"].includes(c.name)
       );
 
-    // 4️⃣ Fallback: if AI says "fruit"
+    
     if (!mainFood) {
       const fruitDetected = foodConcepts.find(c => c.name === "fruit");
       if (fruitDetected) {
         mainFood = { name: "banana", value: fruitDetected.value };
       }
     }
+    // 🥗 Nutrition lookup
+    const normalizedFood = mainFood?.name
+      ?.toLowerCase()
+      ?.replace(/\s+/g, "_");
 
-    // 5️⃣ Nutrition lookup
-    const nutrition =
-      nutritionData[mainFood?.name?.toLowerCase()] || null;
+    const nutrition = nutritionData[normalizedFood] || null;
 
-    // 🔥 SAVE TO MONGODB (ADD HERE)
+
     if (nutrition) {
      await History.create({
     food: mainFood.name,
