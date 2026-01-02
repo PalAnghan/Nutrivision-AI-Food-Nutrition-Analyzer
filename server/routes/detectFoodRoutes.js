@@ -22,7 +22,7 @@ router.post("/detect-food", upload.single("image"), async (req, res) => {
     }
 
     
-    const imageBase64 = req.file.buffer.toString("base64");
+   const imageBase64 = req.file.buffer.toString("base64");
    const concepts = await detectFoodFromImage(req.file.buffer);
 
     
@@ -69,6 +69,7 @@ router.post("/detect-food", upload.single("image"), async (req, res) => {
       confidence: mainFood ? (mainFood.value * 100).toFixed(1) : 0,
       nutrition,
       concepts,
+      isSupported: !!nutrition
     });
   } catch (error) {
     console.error(error);
