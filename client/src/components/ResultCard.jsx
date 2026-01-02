@@ -12,20 +12,22 @@ function ResultCard({ result }) {
       </p>
 
       {/* ✅ IF SUPPORTED → SHOW NUTRITION */}
-      {result.isSupported ? (
-        <ul className="mt-3 text-sm text-gray-700 space-y-1">
-          <li>🔥 Calories: {result.nutrition.calories} kcal</li>
-          <li>🍞 Carbs: {result.nutrition.carbs} g</li>
-          <li>🥩 Protein: {result.nutrition.protein} g</li>
-          <li>🧈 Fat: {result.nutrition.fat} g</li>
-        </ul>
-      ) : (
-        <>
-          {!isSupported && (
-  <p className="warning">
+{result.isSupported && result.nutrition && (
+  <ul className="mt-3 text-sm text-gray-700 space-y-1">
+    <li>🔥 Calories: {result.nutrition.calories} kcal</li>
+    <li>🍞 Carbs: {result.nutrition.carbs} g</li>
+    <li>🥩 Protein: {result.nutrition.protein} g</li>
+    <li>🧈 Fat: {result.nutrition.fat} g</li>
+  </ul>
+)}
+
+{/* ❌ IF NOT SUPPORTED → SHOW WARNING */}
+{!result.isSupported && (
+  <p className="mt-3 text-sm text-orange-600">
     ⚠️ This food is not supported yet. We’ll add it in future updates.
   </p>
 )}
+
 
 
           <button
@@ -36,10 +38,11 @@ function ResultCard({ result }) {
           >
             Request this food
           </button>
-        </>
-      )}
+        
+      )
     </div>
-  );
+  )
 }
+
 
 export default ResultCard;
