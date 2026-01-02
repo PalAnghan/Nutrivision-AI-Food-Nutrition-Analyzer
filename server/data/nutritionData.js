@@ -11,7 +11,7 @@ export const nutritionData = {
 
   // 🍚 Rice-based
   rice: { calories: 130, protein: 2.7, carbs: 28, fat: 0.3 },
-  biryani: { calories: 180, protein: 4, carbs: 30, fat: 6 },
+  biryani: { calories: 180, protein: 4, carbs: 30, fat: 6 },  
   pulao: { calories: 170, protein: 3.5, carbs: 29, fat: 5 },
   fried_rice: { calories: 190, protein: 4.5, carbs: 32, fat: 5 },
   jeera_rice: { calories: 160, protein: 3, carbs: 26, fat: 4 },

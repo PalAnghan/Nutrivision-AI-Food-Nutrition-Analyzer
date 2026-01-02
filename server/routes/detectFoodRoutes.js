@@ -1,9 +1,9 @@
 import express from "express";
 import multer from "multer";
 import { detectFoodFromImage } from "../utils/aiVision.js";
-import { getMainFood } from "../utils/foodCalories.js";
-import nutritionData from "../data/nutritionData.js";
 import History from "../models/FoodHistory.js";
+import { nutritionData } from "../data/nutritionData.js";
+
 
 
 const router = express.Router();
